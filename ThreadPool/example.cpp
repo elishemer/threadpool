@@ -1,4 +1,4 @@
-#include <ctpl.h>
+#include <ctpl_stl.h>
 #include <iostream>
 #include <string>
 
@@ -82,14 +82,8 @@ int main(int argc, char **argv) {
 
     p.push(mmm, "worked");
 
-    auto f = p.pop();
-    if (f) {
-        std::cout << "poped function from the pool ";
-        f(0);
-    }
     // change the number of treads in the pool
-
-    p.resize(1);
+ //   p.resize(1);
 
     std::string s2 = "result";
     auto f1 = p.push([s2](int){
@@ -107,12 +101,9 @@ int main(int argc, char **argv) {
     try {
         f2.get();
     }
-    catch (std::exception & e) {
-        std::cout << "caught exception\n";
+    catch (const std::exception & e) {
+        std::cout << "caught exception, what: %s\n" << e.what();
     }
-
-    // get thread 0
-    auto & th = p.get_thread(0);
 
     return 0;
 }

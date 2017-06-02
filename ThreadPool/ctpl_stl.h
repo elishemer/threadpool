@@ -113,7 +113,7 @@ namespace ctpl {
 
     public:
 
-        thread_pool(size_t nThreads, size_t nSize) : q(nSize) {
+        thread_pool(size_t nThreads, size_t nSize = 0) : q(nSize ? nSize : nThreads) {
             add_threads(nThreads);
         }
 
@@ -125,14 +125,14 @@ namespace ctpl {
         void add_threads(size_t nThreads)
         {
             this->threads.resize(threads.size() + nThreads);
-            for (size_t i = 0; i < nThreads; ++i)
+            for (int i = 0; i < nThreads; ++i)
                 this->set_thread(i);
         }
 
         // get the number of running threads in the pool
         int size() { return static_cast<int>(this->threads.size()); }
 
-        int n_idle() { return this->q.pop_waiting(); }
+        int n_idle() { return (int)this->q.pop_waiting(); }
 
         // empty the queue
         void clear_queue() {
